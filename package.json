@@ -1,0 +1,26 @@
+{
+    "name": "info-card-generator",
+    "version": "1.0.0",
+    "description": "Generate beautiful info cards from articles, notes, and URLs",
+    "main": "scripts/capture_card.js",
+    "scripts": {
+        "capture": "node scripts/capture_card.js",
+        "pdf": "node scripts/html_to_pdf.js",
+        "postinstall": "npx playwright install chromium"
+    },
+    "keywords": [
+        "info-card",
+        "knowledge-management",
+        "ai-workflow",
+        "screenshot",
+        "playwright"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "playwright": "^1.40.0"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

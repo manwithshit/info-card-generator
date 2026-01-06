@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agencize AI 张浩然访谈</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --blueprint-blue: #003366;
+            --blueprint-light: #00d4ff;
+            --blueprint-grid: rgba(0, 212, 255, 0.1);
+            --blueprint-line: rgba(255, 255, 255, 0.8);
+            --bg-dark: #0a192f;
+            --text-main: #e6f1ff;
+            --text-dim: #8892b0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #020c1b;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: var(--text-main);
+        }
+
+        .card-container {
+            width: 900px;
+            background-color: var(--bg-dark);
+            background-image:
+                linear-gradient(var(--blueprint-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--blueprint-grid) 1px, transparent 1px);
+            background-size: 30px 30px;
+            border: 2px solid var(--blueprint-light);
+            border-radius: 4px;
+            padding: 60px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.15);
+            overflow: hidden;
+        }
+
+        /* Decorative bracket corners */
+        .corner {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--blueprint-light);
+        }
+
+        .tl {
+            top: 15px;
+            left: 15px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .tr {
+            top: 15px;
+            right: 15px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .bl {
+            bottom: 15px;
+            left: 15px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .br {
+            bottom: 15px;
+            right: 15px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .header {
+            border-bottom: 2px dashed var(--blueprint-light);
+            padding-bottom: 40px;
+            margin-bottom: 50px;
+        }
+
+        .meta-tags {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--blueprint-light);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .title {
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            font-weight: 300;
+            color: var(--text-dim);
+            line-height: 1.6;
+            max-width: 80%;
+        }
+
+        .abstract-section {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid var(--blueprint-light);
+            padding: 30px;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .abstract-label {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--bg-dark);
+            padding: 0 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: var(--blueprint-light);
+        }
+
+        .abstract-text {
+            font-size: 16px;
+            line-height: 1.8;
+            font-weight: 400;
+        }
+
+        .main-points {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .point-item {
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .point-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            background: var(--blueprint-light);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--blueprint-light);
+        }
+
+        .point-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .point-body {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.7;
+        }
+
+        .schematic-viz {
+            border: 1px solid var(--blueprint-light);
+            padding: 30px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .viz-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--blueprint-light);
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .flow-node {
+            padding: 15px;
+            border: 1px solid var(--blueprint-line);
+            font-size: 13px;
+            border-radius: 8px;
+            min-width: 120px;
+        }
+
+        .arrow {
+            width: 50px;
+            height: 1px;
+            background: var(--blueprint-line);
+            position: relative;
+        }
+
+        .arrow::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: -4px;
+            border: 5px solid transparent;
+            border-left-color: var(--blueprint-line);
+        }
+
+        .quote-block {
+            padding: 40px;
+            border-left: 4px solid var(--blueprint-light);
+            background: rgba(255, 255, 255, 0.02);
+            margin-bottom: 50px;
+        }
+
+        .quote-text {
+            font-size: 24px;
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.5;
+            color: var(--blueprint-light);
+        }
+
+        .quote-author {
+            margin-top: 15px;
+            font-size: 14px;
+            color: var(--text-dim);
+            text-align: right;
+        }
+
+        .market-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .metric-box {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .metric-val {
+            font-family: 'Space Mono', monospace;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blueprint-light);
+        }
+
+        .metric-lbl {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+            color: var(--text-dim);
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card-container">
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+
+        <div class="header">
+            <div class="meta-tags">
+                <span>Ref: AG-002-2026</span>
+                <span>Founder Park Interview</span>
+            </div>
+            <h1 class="title">Agencize AI:<br>“干掉”预设工作流</h1>
+            <p class="subtitle">创始人张浩然：软件不应等待被使用，而应在需要的那一刻才存在。</p>
+        </div>
+
+        <div class="content">
+            <div class="abstract-section">
+                <span class="abstract-label">EXECUTIVE SUMMARY</span>
+                <p class="abstract-text">
+                    Agencize AI 提出了一种全新的 AI-Native 生产力范式：用户只需描述意图，AI 会自主选择、调用并串联 SaaS
+                    基础设施，即时生成个性化的应用。其核心理念是“节点后置”，将复杂的工作流编排从用户端剥离，交给 AI 完成。
+                </p>
+            </div>
+
+            <div class="main-points">
+                <div class="point-item">
+                    <h3 class="point-header">节点后置架构</h3>
+                    <p class="point-body">“预先构建工作流”是错的。应该让用户给目标，AI 替用户思考结构化流程。工作流概念在用户侧不应存在。</p>
+                </div>
+                <div class="point-item">
+                    <h3 class="point-header">精准能力匹配</h3>
+                    <p class="point-body">打散应用的功能点，将模糊的语义理解转化为精确的能力匹配。不看工具定义，只看工具能解决什么。</p>
+                </div>
+                <div class="point-item">
+                    <h3 class="point-header">SaaS 基础设施化</h3>
+                    <p class="point-body">SaaS 不会消亡，但会沉淀为 AI 时代的基础设施。Agencize 负责这“最后一公里”的交付与连接。</p>
+                </div>
+                <div class="point-item">
+                    <h3 class="point-header">验证思维创业</h3>
+                    <p class="point-body">反对完美主义，主张尽快推出产品拿市场反馈。用验证思维替代理想主义，实现快速迭代。</p>
+                </div>
+            </div>
+
+            <div class="schematic-viz">
+                <span class="viz-label">SCHEMATIC FLOW: INTENT TO AUTOMATION</span>
+                <div class="flow-container">
+                    <div class="flow-node">User Intent</div>
+                    <div class="arrow"></div>
+                    <div class="flow-node" style="color:var(--blueprint-light); border-color:var(--blueprint-light);">AI
+                        Reasoner</div>
+                    <div class="arrow"></div>
+                    <div class="flow-node">SaaS API Call</div>
+                    <div class="arrow"></div>
+                    <div class="flow-node">Custom Outcome</div>
+                </div>
+            </div>
+
+            <div class="quote-block">
+                <p class="quote-text">“我们想解决的不是『做 AI 工作流』，是『根本不需要有工作流』。”</p>
+                <div class="author-sign">— 张浩然 · Agencize AI 创始人</div>
+            </div>
+
+            <div class="market-metrics">
+                <div class="metric-box">
+                    <div class="metric-val">20X-50X</div>
+                    <div class="metric-lbl">Efficiency Gain</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-val">$10T+</div>
+                    <div class="metric-lbl">TAM (Labor Mkt)</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-val">95%</div>
+                    <div class="metric-lbl">Auto Completion</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <span>© 2026 Archive / Deepmind Research</span>
+            <span>Tag: #AI-Native #SaaS-2.0 #Agent-Architecture</span>
+        </div>
+    </div>
+</body>
+
+</html>

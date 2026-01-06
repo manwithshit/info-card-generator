@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基础卡片模板</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --accent: #3b82f6;
+            --border: #e2e8f0;
+            --surface: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', 'Outfit', sans-serif;
+            background: #f1f5f9;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .card-container {
+            width: 900px;
+            background: var(--bg);
+            border-radius: 24px;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            margin-bottom: 35px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .tag {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 5px 14px;
+            border-radius: 100px;
+            background: var(--accent);
+            color: white;
+        }
+
+        .tag.secondary {
+            background: var(--surface);
+            color: var(--text-muted);
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--text);
+            line-height: 1.2;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 17px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ===== SUMMARY ===== */
+        .summary {
+            background: var(--surface);
+            padding: 28px;
+            border-radius: 16px;
+            margin-bottom: 35px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .summary p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        /* ===== SECTION TITLE ===== */
+        .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 18px;
+        }
+
+        /* ===== KEY POINTS ===== */
+        .points-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .point-card {
+            padding: 22px;
+            background: var(--surface);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .point-icon {
+            font-size: 24px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .point-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .point-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        /* ===== QUOTE ===== */
+        .quote-box {
+            padding: 30px;
+            background: linear-gradient(135deg, var(--surface), #fff);
+            border-radius: 16px;
+            margin-bottom: 35px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .quote-text {
+            font-size: 20px;
+            font-style: italic;
+            color: var(--text);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .quote-author {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* ===== STATS ===== */
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            padding: 28px;
+            background: var(--text);
+            border-radius: 16px;
+            margin-bottom: 35px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 25px;
+            border-top: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .footer-tags {
+            display: flex;
+            gap: 10px;
+        }
+
+        .footer-tag {
+            font-size: 11px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card-container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="tags">
+                <span class="tag">主标签</span>
+                <span class="tag secondary">副标签</span>
+            </div>
+            <h1 class="title">在这里填写卡片标题</h1>
+            <p class="subtitle">这是一段简短的副标题或描述，概括卡片的核心内容。</p>
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="summary">
+            <p>执行摘要放在这里。用 2-3 句话概括整篇内容的核心观点，让读者一眼就能理解全文精华。</p>
+        </div>
+
+        <!-- KEY POINTS -->
+        <div class="section-title">核心要点</div>
+        <div class="points-grid">
+            <div class="point-card">
+                <span class="point-icon">📌</span>
+                <h3 class="point-title">要点一</h3>
+                <p class="point-desc">对第一个核心要点的详细描述，保留足够的信息量。</p>
+            </div>
+            <div class="point-card">
+                <span class="point-icon">🎯</span>
+                <h3 class="point-title">要点二</h3>
+                <p class="point-desc">对第二个核心要点的详细描述，保留足够的信息量。</p>
+            </div>
+            <div class="point-card">
+                <span class="point-icon">💡</span>
+                <h3 class="point-title">要点三</h3>
+                <p class="point-desc">对第三个核心要点的详细描述，保留足够的信息量。</p>
+            </div>
+            <div class="point-card">
+                <span class="point-icon">⚡</span>
+                <h3 class="point-title">要点四</h3>
+                <p class="point-desc">对第四个核心要点的详细描述，保留足够的信息量。</p>
+            </div>
+        </div>
+
+        <!-- QUOTE -->
+        <div class="quote-box">
+            <p class="quote-text">"在这里填写一句有力的引用或金句。"</p>
+            <p class="quote-author">— 作者姓名</p>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="stat-value">100K</div>
+                <div class="stat-label">指标一</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">50%</div>
+                <div class="stat-label">指标二</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">2026</div>
+                <div class="stat-label">年份</div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <span>来源：填写原文来源</span>
+            <div class="footer-tags">
+                <span class="footer-tag">#标签1</span>
+                <span class="footer-tag">#标签2</span>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
