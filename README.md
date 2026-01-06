@@ -30,7 +30,7 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/YOUR_USERNAME/info-card-generator.git
+git clone https://github.com/manwithshit/info-card-generator.git
 cd info-card-generator
 
 # 安装 Node 依赖
