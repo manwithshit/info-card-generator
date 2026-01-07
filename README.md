@@ -104,6 +104,11 @@ info-card-generator/
 
 ## 🎨 卡片风格示例
 
+| 风格 | 示例 |
+|------|------|
+| **Deep Tech / Analysis** | <img src="docs/images/claude_skills_axton.png" width="400"> |
+| **Growth Hacker / Notes** | <img src="docs/images/million_dollar_weekend.png" width="400"> |
+
 | 风格 | 适用场景 |
 |------|----------|
 | **Cyberpunk / Terminal** | 技术教程、编程指南 |
