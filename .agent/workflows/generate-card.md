@@ -29,10 +29,11 @@ description: 将文案或链接内容转换为精美的HTML信息卡片图片
 按照以下优先级尝试获取内容：
 
 1.  **视频类（YouTube 等）** → 见下方「视频内容提取决策树」
-2.  **微信公众号 (`mp.weixin.qq.com`)** → 直接使用浏览器代理抓取
-3.  **普通网页 - 优先级 1** → `read_url_content` 快速抓取
-4.  **普通网页 - 优先级 2** → 浏览器子代理（反爬/JS渲染场景）
-5.  **最终兜底** → NotebookLM 深度解析
+2.  **微信公众号 (`mp.weixin.qq.com`)** → 见下方「3. 微信公众号专用抓取流程」
+3.  **X (Twitter) (`x.com` / `twitter.com`)** → 见下方「X/Twitter 专用抓取流程」
+4.  **普通网页 - 优先级 1** → `read_url_content` 快速抓取
+5.  **普通网页 - 优先级 2** → 浏览器子代理（反爬/JS渲染场景）
+6.  **最终兜底** → NotebookLM 深度解析
 
 ---
 
@@ -145,43 +146,67 @@ description: 将文案或链接内容转换为精美的HTML信息卡片图片
 
 **适用条件：**
 - ✅ URL 包含 `mp.weixin.qq.com`
-- ✅ 公开可访问的公众号文章
 
-**技术背景（参考 NeoFeed 双层抓取架构）：**
+**执行优先级：**
 
-微信公众号作为封闭生态，面临三大挑战：
-- **动态渲染**：文章主体通过异步脚本加载，单纯 fetch/curl 只能拿到空白框架
-- **反爬策略**：对频繁请求的 IP 会重定向或封禁
-- **私有协议**：图片采用 `data-src` 懒加载机制，存在防盗链限制
+#### 3.1 🚀 自动化路径（静默执行 - 无头模式）
+这是首选的获取方式，利用无头浏览器在后台快速抓取。
+
+**执行命令：**
+// turbo
+```bash
+python scripts/crawl_wechat.py "[URL]" "input/[YYMMDD]WeChat_Content.md"
+```
+
+*注：此步骤由于标记了 `// turbo`，将自动静默运行，不会弹窗请求确认。*
+
+#### 3.2 🛠️ 交互式路径（手动兜底 - 真实浏览器）
+如果上述脚本失败（报错、被拦截或返回空内容），则切换至此路径。
+
+**执行步骤：**
+1. **启动浏览器子代理**
+   使用 `browser_navigate` 和 `browser_snapshot`。
+   *注：此步骤涉及动态网页访问和真实身份环境，我会设为 `SafeToAutoRun: false`，**系统会弹窗请求你确认**。*
+
+2. **从 snapshot 中提取信息**
+   - 标题：通常在 `heading [level=1]` 中
+   - 作者/公众号名：在页面顶部元信息区
+   - 正文内容：优先抓取 `#js_content` 的 `innerText` 内容，确保完整
+   - 自动过滤广告和干扰信息
+
+**优势：**
+- ✅ **首选提效**：大部分文章通过自动化脚本直接秒杀，无需用户操作。
+- ✅ **强制安全**：一旦进入手动兜底阶段，通过弹窗确认保护用户隐私和登录态安全。
+- ✅ **结构化输出**：无论哪条路径，最终都保存为规范的 Markdown 原文。
+
+**注意事项：**
+- 仅粉丝可见的文章需要用户在手动模式下确保已登录微信。
+- 如遇验证码页面，请在手动模式下完成验证。
+
+---
+
+### 3.5 X/Twitter 专用抓取流程
+
+**适用条件：**
+- ✅ URL 包含 `x.com` 或 `twitter.com`
 
 **执行步骤：**
 
-1. **直接使用浏览器代理访问**
-   ```
-   browser_navigate → 目标 URL
-   browser_snapshot → 获取页面结构化内容
+1. **调用自动化抓取脚本**
+   利用 Playwright 模拟浏览器环境，规避基本的反爬虫限制。
+
+   // turbo
+   ```bash
+   python scripts/crawl_x.py "[URL]" "input/[YYMMDD]X_Content.md"
    ```
 
-2. **从 snapshot 中提取关键信息**
-   - 标题：通常在 `heading [level=1]` 中
-   - 作者/公众号名：在页面顶部元信息区
-   - 发布时间：在元信息区的 `emphasis` 元素
-   - 正文内容：所有 `paragraph` 元素的文本
-
-3. **内容整理**
-   - 浏览器 snapshot 返回结构化 YAML，可直接提取文本
-   - 自动过滤广告、推荐文章等噪音
-   - 保留图片描述（`img` 元素的 alt 文本）
+2. **内容处理**
+   - 脚本会自动解析推文文案、作者 Handle 等信息。
+   - 若脚本失败，则回退到浏览器子代理或 NotebookLM。
 
 **优势：**
-- ✅ **成功率高**：浏览器完整渲染 JS，获取动态内容
-- ✅ **无需 Jina**：Jina Reader 对微信公众号超时/失败
-- ✅ **结构化输出**：snapshot 直接返回可解析的 YAML 格式
-- ✅ **无反爬问题**：模拟真实用户访问
-
-**注意事项：**
-- 仅粉丝可见的文章需要用户已登录微信
-- 如遇验证码页面，可能需要用户手动完成验证后重试
+- ✅ **全自动执行**：带有 `// turbo` 标注，无需用户点击确认。
+- ✅ **结构化**：针对 X 的页面布局进行了定制化提取。
 
 ---
 
@@ -203,17 +228,36 @@ description: 将文案或链接内容转换为精美的HTML信息卡片图片
 5. 等待内容解析完成
 6. 在 Studio 面板选择 **"简报文档"** 生成报告
 7. 等待报告生成完成
-8. 复制报告全文
+8. **点击全文拷贝按钮（关键操作）**：
+   - 在生成的简报文档（Briefing Document）正上方或右侧操作栏，寻找 **"双矩形叠加"图标**（鼠标悬停显示 `Copy content with formatting`）。
+   - **严禁**：严禁直接从页面划词选中，或使用子代理尝试总结内容，这会导致信息量严重折损。
+   - **必须**：通过子代理模拟物理点击该按钮，确保获取到的内容是 100% 完整、带格式且未经二次压缩的原文。
 9. 保存到 `input/` 目录
 10. （可选）使用完成后删除或归档该笔记本
 
 ### 5. 保存原始输入到 `input/`
 
-无论采用哪种方式获取内容，都需要保存原始输入：
+**⚠️ 核心原则：保存原文，不做摘要**
+
+无论采用哪种方式获取内容，都需要保存**完整的原始内容**：
 
 - **Markdown文件**：复制到 `input/` 文件夹
-- **URL链接**：创建md文件保存抓取/解析的内容
+- **URL链接**：创建md文件保存**完整抓取的原文**
 - **纯文本**：创建md文件保存原始文案
+
+**🚫 禁止行为：**
+- ❌ 不要在保存时自动做摘要/精简
+- ❌ 不要只保存"关键要点"
+- ❌ 不要用浏览器子代理返回的"总结报告"替代原文
+
+**✅ 正确做法：**
+- ✅ 保存抓取到的**完整文本内容**
+- ✅ 对于长文章，保留所有段落和细节
+- ✅ 摘要/精简工作留到「生成HTML卡片」步骤进行
+
+**📝 微信公众号文章抓取时的注意事项：**
+- 浏览器子代理 Task 中必须明确要求：**"返回完整的文章正文，不要做摘要"**
+- 使用 JavaScript 提取 `#js_content` 的 `innerText` 时，确保获取并返回全部文本
 
 **⚠️ 文件命名规范（重要）**
 
@@ -227,8 +271,8 @@ description: 将文案或链接内容转换为精美的HTML信息卡片图片
 
 **⚠️ 必须参考并遵循以下Skill文件中的设计规范：**
 
-📂 **主要Skill**: `skills/skills/frontend-design/SKILL.md`
-📂 **辅助参考**: `skills/skills/canvas-design/SKILL.md`
+📂 **主要Skill**: `skills/info-card-design/SKILL.md`
+📂 **辅助参考**: 根据项目实际情况调整
 
 ---
 
@@ -305,7 +349,7 @@ description: 将文案或链接内容转换为精美的HTML信息卡片图片
 // turbo
 运行截图脚本生成PNG图片：
 ```bash
-cd /Users/earonwong/Desktop/个人随手记录/output/cards/[卡片名称] && node ../../../scripts/capture_card.js [卡片名称].html
+cd output/cards/[卡片名称] && node ../../scripts/capture_card.js [卡片名称].html
 ```
 
 ### 8. 输出结果
@@ -320,17 +364,23 @@ cd /Users/earonwong/Desktop/个人随手记录/output/cards/[卡片名称] && no
 ## 目录结构
 
 ```
-/Users/earonwong/Desktop/个人随手记录/
-├── input/                          # 原始输入文件
-├── output/cards/                   # 生成的卡片
-│   └── [topic_name]/
-│       ├── [topic_name].html
-│       └── [topic_name].png
+info-card-generator/
+├── input/                      # 原始内容（Markdown 格式）
+├── output/
+│   └── cards/                  # 生成的卡片（HTML + PNG）
+│       └── [card_name]/
+│           ├── [card_name].html
+│           └── [card_name].png
 ├── scripts/
-│   └── capture_card.js             # 截图脚本
-└── skills/skills/
-    ├── frontend-design/SKILL.md    # 前端设计Skill
-    └── canvas-design/SKILL.md      # 视觉设计Skill
+│   ├── capture_card.js         # Playwright 截图脚本
+│   ├── crawl_wechat.py         # 微信公众号抓取脚本（可选）
+│   └── crawl_x.py              # X/Twitter 抓取脚本（可选）
+├── .agent/
+│   └── workflows/
+│       └── generate-card.md    # AI 工作流定义
+└── skills/
+    └── info-card-design/
+        └── SKILL.md            # AI Skill 定义
 ```
 
 ## 语言规范
@@ -343,6 +393,7 @@ cd /Users/earonwong/Desktop/个人随手记录/output/cards/[卡片名称] && no
 - Node.js
 - playwright
 - Chromium浏览器
+- Python 3（用于可选的内容抓取脚本）
 
 ## 外部工具配置
 
@@ -364,4 +415,3 @@ cd /Users/earonwong/Desktop/个人随手记录/output/cards/[卡片名称] && no
   - 自动生成结构化的内容摘要
   - 成功率 > 95%
   - 对于非英文视频，直接使用 NotebookLM（跳过 DownSub）
-
